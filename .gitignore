@@ -1,1 +1,5 @@
 /.vscode/*
+/bin/*
+
+*.obj
+*.pdb

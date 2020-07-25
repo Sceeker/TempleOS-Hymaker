@@ -16,7 +16,7 @@ extern God god;
 
 void  *mmemset( void *b, int c, int len );
 
-void updateSeed(int n);
+void updateSeed();
 
 int rand();
 

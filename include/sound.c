@@ -113,17 +113,14 @@ void songAddBlank( Song* song, const float length ) {
 #define DUR_8_16_16     5
 #define DUR_16_16_8     6
 
-#define HALFSTEP_RATIO 1.0594630943592953
-
-char god_simple_songs [5] = {DUR_4, DUR_4, DUR_4, DUR_4, DUR_8_8};
-char god_normal_songs [5] = {DUR_4, DUR_4, DUR_8_8, DUR_3_3_3, DUR_16_16_16_16};
-char god_complex_songs[9] = {DUR_4, DUR_4, DUR_8_8, DUR_8_8, DUR_8DOT_16, DUR_3_3_3, DUR_8_16_16, DUR_16_16_8, DUR_16_16_16_16};
+const char god_simple_songs [5] = {DUR_4, DUR_4, DUR_4, DUR_4, DUR_8_8};
+const char god_normal_songs [5] = {DUR_4, DUR_4, DUR_8_8, DUR_3_3_3, DUR_16_16_16_16};
+const char god_complex_songs[9] = {DUR_4, DUR_4, DUR_8_8, DUR_8_8, DUR_8DOT_16, DUR_3_3_3, DUR_8_16_16, DUR_16_16_8, DUR_16_16_16_16};
 
 God god;
+
 float note_len = 1.0;
 int globalOctave = 0;
-int meter_top = 0;
-int meter_bottom = 0;
 
 void InsNote( CMakeSongSettings *mss, char *buf, int k, int *j ) {   // k is a random note nibble
     if ( !k && mss->rests ) {
@@ -139,7 +136,7 @@ void InsNote( CMakeSongSettings *mss, char *buf, int k, int *j ) {   // k is a r
                 *j += 1;
             }
 
-            if ( !k ) {
+            if ( ! k ) {
                 buf[*j] = 'G';
             } else {
                 buf[*j] = k - 1 + 'A';
@@ -188,7 +185,7 @@ char* GodSongStr( int complexity, bool rests, bool six_eight, int octave ) { // 
 
     if (mss.six_eight) {
         len = 6;
-        buf[j++] = 'M';
+        buf[j++] = 'M';    // Useless for us, but we keep original DIVINE code and DIVINE song strings
         buf[j++] = '6';
         buf[j++] = '/';
         buf[j++] = '8';
@@ -381,8 +378,7 @@ char *MusicSetMeter( char *st ) {
     while ( ch == 'M' ) {
         ch = *st++;
 
-        if ( '0' <= ch && ch <= '9' ) {
-            meter_top = ch - '0';
+        if ( '0' <= ch && ch <= '9' ) {         // Kinda dumb since, like I said earlier, time signature is useless for us (note_len suffice)
             ch = *st++;
         }
 
@@ -391,7 +387,6 @@ char *MusicSetMeter( char *st ) {
         }
 
         if ( '0' <= ch && ch <= '9' ) {
-            meter_bottom = ch - '0';
             ch = *st++;
         }
     }

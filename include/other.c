@@ -20,9 +20,9 @@ void  *mmemset( void *b, int c, int len ) {
     return(b);
 }
 
-void updateSeed(int n) {
+void updateSeed() {
     seed = seed * 110356915245 + 12345;
-    seed = 69420 * seed + n * 65453;
+    seed = 69420 * seed + time(NULL) * 65453;
 }
 
 int rand() {
@@ -34,7 +34,7 @@ float random() {
     float res = 0;
     res = (float)rand() / (float)32768;
 
-    updateSeed(rand());
+    updateSeed();
 
     return res;
 }
@@ -175,7 +175,7 @@ int GodBits( int num_bits ) { // Return N bits. If low on entropy pop-up okay.
         num_bits--;                 // and care about one less bit
     } else {
         // or insert more bits from LOL NOT THE PICKER
-        updateSeed(time(NULL));
+        updateSeed();
         GodBitsIns(GOD_GOOD_BITS, seed);
     }
   }
