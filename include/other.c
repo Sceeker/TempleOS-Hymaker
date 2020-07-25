@@ -150,7 +150,7 @@ void makeGod() {
     god.size = 2048 * 8;
 }
 
-char *getGodWord() {
+const char *getGodWord() {
     return bibleWords[rand() % 7568];
 }
 

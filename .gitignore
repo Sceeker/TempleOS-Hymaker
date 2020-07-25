@@ -2,6 +2,7 @@
 
 *.obj
 *.pdb
+*.ilk
 *.wav
 
 TempleOS-Hymaker.code-workspace

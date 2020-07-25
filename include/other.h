@@ -42,7 +42,7 @@ char* concatenate( const char* orig, const char* add );
 
 void makeGod();
 
-char *getGodWord();
+const char *getGodWord();
 
 // CODE THAT FOLLOWS IS DIRECTLY TRANSLATED/EDITED FROM THE TEMPLEOS SOURCE CODE
 
