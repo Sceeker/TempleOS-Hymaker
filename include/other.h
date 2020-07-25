@@ -1,11 +1,13 @@
 #ifndef OTHERDEF
 #define OTHERDEF
 
+#include "bible.h"
+
 typedef int bool;
 enum { false, true };
 
 typedef struct God {
-    char* bits;
+    char *bits;
     int top;
     int size;
 } God;
@@ -39,6 +41,8 @@ int len( const char *str );
 char* concatenate( const char* orig, const char* add );
 
 void makeGod();
+
+char *getGodWord();
 
 // CODE THAT FOLLOWS IS DIRECTLY TRANSLATED/EDITED FROM THE TEMPLEOS SOURCE CODE
 

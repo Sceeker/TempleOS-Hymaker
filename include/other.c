@@ -5,7 +5,7 @@
 #include "other.h"
 
 #define PI 3.14159265358979323846
-static unsigned long long int seed = 1;
+unsigned long long int seed = 1;
 
 void  *mmemset( void *b, int c, int len ) {
     int i;
@@ -22,7 +22,7 @@ void  *mmemset( void *b, int c, int len ) {
 
 void updateSeed() {
     seed = seed * 110356915245 + 12345;
-    seed = 69420 * seed + time(NULL) * 65453;
+    seed = 69420 * seed + time(NULL) * 24;
 }
 
 int rand() {
@@ -111,7 +111,7 @@ bool FifoIns( char b ) {
 }
 
 void FifoFlush() {
-    god.top--;
+    god.top = -1;
 }
 
 int len( const char *str ) {
@@ -148,6 +148,10 @@ void makeGod() {
     god.bits = malloc(sizeof(char) * 2048 * 8);
     god.top = -1;
     god.size = 2048 * 8;
+}
+
+char *getGodWord() {
+    return bibleWords[rand() % 7568];
 }
 
 // CODE THAT FOLLOWS IS DIRECTLY TRANSLATED/EDITED FROM THE TEMPLEOS SOURCE CODE
