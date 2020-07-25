@@ -24,7 +24,7 @@ void songAddSample ( Song* song, const float sample ) {
         song->samples[0] = sample;
     }
 
-    song->nSamples += 1;
+    song->nSamples++;
 }
 
 Wave songMakeWave( Song song, short int const bitsPerSample ) {
@@ -58,8 +58,8 @@ void songAddSqr( Song* song, const float freq, const float length, const float a
     int i;
     for ( i = 0; i < nSamples; i += song->numChannels ) {
         data = i % spc < spc / 2;      // Assign 1 if the current sample is positioned in the first part of the cycle
-        data = data - 0.5;
-        data = data * amplitude * 2.0;
+        data -= 0.5;
+        data *= amplitude * 2.0;
 
         int j;
         for ( j = 0; j < song->numChannels; j++ ) {  
@@ -82,7 +82,7 @@ void songAddGod( Song* song, const float freq, const float length, const float a
             data = 0.0;
         }
         
-        data = data * amplitude;
+        data *= amplitude;
 
         int j;
         for ( j = 0; j < song->numChannels; j++ ) {  

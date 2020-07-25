@@ -93,7 +93,7 @@ bool FifoRem( char* b ) {
         return false;
     } else {
         *b = god.bits[god.top];
-        god.top -= 1;
+        god.top--;
     }
 
     return true;
@@ -103,7 +103,7 @@ bool FifoIns( char b ) {
     if ( god.top == god.size - 1 ) {
         return false;
     } else {
-        god.top += 1;
+        god.top++;
         god.bits[god.top] = b;
     }
 
@@ -111,14 +111,14 @@ bool FifoIns( char b ) {
 }
 
 void FifoFlush() {
-    god.top = -1;
+    god.top--;
 }
 
 int len( const char *str ) {
     int len = 0;
 
     while (str[len] != '\0') {
-        len = len + 1;
+        len++;
     }
 
     return len + 1;
@@ -130,14 +130,14 @@ char* concatenate( const char* orig, const char* add ) {
 
     while (orig[cnt] != '\0') {
         res[cnt] = orig[cnt];
-        cnt += 1;
+        cnt++;
     }
 
     int cnt2 = 0;
 
     while (add[cnt2] != '\0') {
         res[cnt + cnt2] = add[cnt2];
-        cnt2 += 1;
+        cnt2++;
     }
 
     res[cnt + cnt2] = '\0';
