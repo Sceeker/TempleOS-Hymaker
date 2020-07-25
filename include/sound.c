@@ -36,7 +36,7 @@ Wave songMakeWave( Song song, short int const bitsPerSample ) {
     int i;
     float *frameData = malloc(sizeof(float) * song.numChannels);
 
-    for( i = 0; i < song.nSamples; i += song.numChannels ) {
+    for( i = 0; i < song.nSamples; i++ ) {
         int j;
 
         for ( j = 0; j < song.numChannels; j++ ) {
@@ -56,7 +56,7 @@ void songAddSqr( Song* song, const float freq, const float length, const float a
     float data;
 
     int i;
-    for ( i = 0; i < nSamples; i += song->numChannels ) {
+    for ( i = 0; i < nSamples; i++ ) {
         data = i % spc < spc / 2;      // Assign 1 if the current sample is positioned in the first part of the cycle
         data -= 0.5;
         data *= amplitude * 2.0;
@@ -75,7 +75,7 @@ void songAddGod( Song* song, const float freq, const float length, const float a
     float data;
 
     int i;
-    for ( i = 0; i < nSamples; i += song->numChannels ) {
+    for ( i = 0; i < nSamples; i++ ) {
         if ( freq > 0.0 ) {
             data = divineSquare(i, freq, song->sampleRate, amplitude / 16);
         } else {

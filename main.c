@@ -8,7 +8,7 @@ int main() {
     makeGod();      // Initialize fifo (used for the God bits (random generator))
 
     updateSeed();     // Update seed for randomness. We don't use "God picker" here (we want this to run without a person)
-
+    
     int complexity;
     bool rests;
     bool six_eight;
@@ -73,7 +73,7 @@ int main() {
     
     waveToFile( &myWave, name);       // Save our hymn's wave
     waveDestroy( &myWave );
-
+    
     printf("\nPress any key to exit.");
     gets( input );
 
