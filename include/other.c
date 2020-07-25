@@ -5,7 +5,7 @@
 #include "other.h"
 
 #define PI 3.14159265358979323846
-unsigned long long int seed = 1;
+static unsigned long long int seed = 1;
 
 void  *mmemset( void *b, int c, int len ) {
     int i;

@@ -1,6 +1,6 @@
 // Words directly imported from the TempleOS source code
 
-static char* bibleWords[7569] = {
+static const char* bibleWords[7569] = {
 "a",
 "abandon",
 "abandoned",
