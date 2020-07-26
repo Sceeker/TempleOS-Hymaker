@@ -83,9 +83,9 @@ void songAddSqr( Song *song, const float freq, const float length, const float a
     }
 }
 
-void songAddGod( Song *song, const float freq, const float length, const float amplitude ) {
+void songAddGod( Song *song, const float freq, const float length, const float amplitude, bool noise ) {
     float data;
-    const float randomness = amplitude / 64.0;
+    const float randomness = amplitude / 64.0 * noise;
 
     int spc = song->sampleRate / freq;   // Samples per cycle
     int nSamples = song->sampleRate * length;     // Number of samples to add
@@ -406,7 +406,7 @@ char *MusicSetMeter( char *st ) {
     return --st;
 }
 
-Song strToSong( char* song, int sampleRate, int numChannels ) {
+Song strToSong( char* song, int sampleRate, int numChannels, bool noise ) {
     const char note_map[7] = {0, 2, 3, 5, 7, 8, 10};
     Song mySong = makeSong(sampleRate, numChannels);
 
@@ -461,13 +461,10 @@ Song strToSong( char* song, int sampleRate, int numChannels ) {
 
         d = note_len / tempo;
 
-        if ( ona == 0 ) {
-            songAddBlank(&mySong, d);
-        } else {
-            freq = Ona2Freq(ona);
+        freq = Ona2Freq(ona);
 
-            songAddGod(&mySong, freq, d, 1.0);
-        }
+        songAddGod(&mySong, freq, d, 1.0, noise);
+
     }
 
     return mySong;

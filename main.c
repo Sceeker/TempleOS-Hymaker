@@ -64,7 +64,7 @@ int main() {
     printf("\nHere is your hymn's string:\n%s\n", song);
 
     Song mySong = makeSong(32000, 1);       // Create a song for the hymn at 32000Hz in mono
-    mySong = strToSong(song, 32000, 1);     // Convert the hymn string to a song
+    mySong = strToSong(song, 32000, 1, false);     // Convert the hymn string to a song
 
     Wave myWave = songMakeWave(mySong, 8);  // Create a wave corresponding to our song
 

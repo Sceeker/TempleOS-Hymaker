@@ -18,7 +18,7 @@ void songAddBlank( Song* song, const float length );
 
 void songAddSqr( Song* song, const float freq, const float length, const float amplitude );
 
-void songAddGod( Song* song, const float freq, const float length, const float amplitude );
+void songAddGod( Song* song, const float freq, const float length, const float amplitude, bool noise );
 
 // CODE THAT FOLLOWS IS DIRECTLY TRANSLATED/EDITED FROM THE TEMPLEOS SOURCE CODE
 
@@ -48,6 +48,6 @@ char *MusicSetOctave( char *st );
 
 char *MusicSetMeter( char *st );
 
-Song strToSong( char* song, int sampleRate, int numChannels );
+Song strToSong( char* song, int sampleRate, int numChannels, bool noise );
 
 // END OF EDITED CODE
