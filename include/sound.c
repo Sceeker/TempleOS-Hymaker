@@ -29,7 +29,7 @@ void songAddSample ( Song* song, const float sample ) {
 
 Wave songMakeWave( Song song, short int const bitsPerSample ) {
     float duration = (float)song.nSamples / (float)song.sampleRate;
-    
+
     Wave myWave = makeWave(song.sampleRate, song.numChannels, bitsPerSample);
     waveSetDuration( &myWave, duration );
 
@@ -49,48 +49,6 @@ Wave songMakeWave( Song song, short int const bitsPerSample ) {
     return myWave;
 }
 
-void songAddSqr( Song* song, const float freq, const float length, const float amplitude ) {
-    int spc = song->sampleRate / freq;   // Samples per cycle
-    int nSamples = song->sampleRate * length;     // Number of samples to add
-
-    float data;
-
-    int i;
-    for ( i = 0; i < nSamples; i++ ) {
-        data = i % spc < spc / 2;      // Assign 1 if the current sample is positioned in the first part of the cycle
-        data -= 0.5;
-        data *= amplitude * 2.0;
-
-        int j;
-        for ( j = 0; j < song->numChannels; j++ ) {  
-            songAddSample(song, data);
-        }
-    }
-}
-
-void songAddGod( Song* song, const float freq, const float length, const float amplitude ) {
-    int spc = song->sampleRate / freq;   // Samples per cycle
-    int nSamples = song->sampleRate * length;     // Number of samples to add
-
-    float data;
-
-    int i;
-    for ( i = 0; i < nSamples; i++ ) {
-        if ( freq > 0.0 ) {
-            data = divineSquare(i, freq, song->sampleRate, amplitude / 16);
-        } else {
-            data = 0.0;
-        }
-        
-        data *= amplitude;
-
-        int j;
-        for ( j = 0; j < song->numChannels; j++ ) {  
-            songAddSample(song, data);
-        }
-    }
-}
-
 void songAddBlank( Song* song, const float length ) {
     int nSamples = song->sampleRate * length;     // Number of samples to add
 
@@ -100,6 +58,54 @@ void songAddBlank( Song* song, const float length ) {
     int j;
     for ( i = 0; i < nSamples; i += 1 ) {
         songAddSample(song, 0.0);
+    }
+}
+
+void songAddSqr( Song* song, const float freq, const float length, const float amplitude ) {
+    if ( freq > 0.0 ) {
+        float data;
+
+        int spc = song->sampleRate / freq;   // Samples per cycle
+        int nSamples = song->sampleRate * length;     // Number of samples to add
+
+        int i;
+        for ( i = 0; i < nSamples; i++ ) {
+            data = i % spc < spc / 2;      // Assign 1 if the current sample is positioned in the first part of the cycle
+            data -= 0.5;
+            data *= amplitude * 2.0;
+
+            int j;
+            for ( j = 0; j < song->numChannels; j++ ) {  
+               songAddSample(song, data);
+            }
+        }
+
+    } else {
+        songAddBlank(&song, length);
+    }
+}
+
+void songAddGod( Song* song, const float freq, const float length, const float amplitude ) {
+    if ( freq > 0.0 ) {
+        float data;
+
+        int spc = song->sampleRate / freq;   // Samples per cycle
+        int nSamples = song->sampleRate * length;     // Number of samples to add
+
+        int i;
+        for ( i = 0; i < nSamples; i++ ) {
+            data = divineSquare(i, freq, song->sampleRate, amplitude / 6);
+        
+            data *= amplitude;
+
+            int j;
+            for ( j = 0; j < song->numChannels; j++ ) {  
+                songAddSample(song, data);
+            }
+        }
+
+    } else {
+        songAddBlank(&song, length);
     }
 }
 
@@ -281,7 +287,7 @@ char* GodSongStr( int complexity, bool rests, bool six_eight, int octave ) { // 
   return buf;
 }
 
-char* GodSong( int complexity, bool rests, bool six_eight, int octave ) { // Make God generate 2measuresx2+2measuresx2
+char* GodSong( int complexity, bool rests, bool six_eight, int octave ) {       // Make God generate 2measuresx2+2measuresx2
     char* st1 = GodSongStr(complexity, rests, six_eight, octave);
     char* st2 = GodSongStr(complexity, rests, six_eight, octave);
 

@@ -49,9 +49,7 @@ float divineSquare( int position, float freq, float sampleRate, float randomness
     float res = 0;
 
     int spc = sampleRate / freq;
-    position = position % spc + 1;
-    
-    double tmp = (float) position / spc;
+    double tmp = (float) (position % spc + 1) / spc;
 
     if ( tmp <= 0.0833 ) {
         res = sin(6.0 * PI * tmp);
@@ -64,6 +62,11 @@ float divineSquare( int position, float freq, float sampleRate, float randomness
     } else {
         res = sin(6.0 * PI * tmp);
     }
+
+    res *= 0.8;
+    int i;
+
+ 
 
     res += random() * (float)randSign() * randomness;
 

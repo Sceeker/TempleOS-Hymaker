@@ -9,7 +9,7 @@ int main() {
 
     updateSeed();     // Update seed for randomness. We don't use "God picker" here (we want this to run without a person)
     
-    int complexity;
+    /* int complexity;
     bool rests;
     bool six_eight;
     int octave;
@@ -69,13 +69,17 @@ int main() {
     Wave myWave = songMakeWave(mySong, 8);  // Create a wave corresponding to our song
 
     char *name = concatenate(getGodWord(), ".wav");
-    printf("\nIt has been saved as %s", name);
+    printf("\nIt has been saved as %s", name); */
+
+    char* song = "5sFFFFqEEetCCCe.Cs4Aq5Ee4Gs5CCq4G5sFFFFqEEetCCCe.Cs4Aq5Ee4Gs5CCq4G5eE4Gs5DDDD4GGe5Fq4AeA5Eq4Be5CsC4Ge.5Ds4G5eE4Gs5DDDD4GGe5Fq4AeA5Eq4Be5CsC4Ge.5Ds4G";
+
+    Song mySong = makeSong(32000, 1);       // Create a song for the hymn at 32000Hz in mono
+    mySong = strToSong(song, 32000, 1);
+
+    Wave myWave = songMakeWave(mySong, 8);
     
-    waveToFile( &myWave, name);       // Save our hymn's wave
+    waveToFile( &myWave, "oui.wav");       // Save our hymn's wave
     waveDestroy( &myWave );
-    
-    printf("\nPress any key to exit.");
-    gets( input );
 
     return 0;
 }

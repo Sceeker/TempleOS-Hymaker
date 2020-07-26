@@ -14,6 +14,8 @@ void songAddSample ( Song* song, const float sample );
 
 Wave songMakeWave( Song song, short int const bitsPerSample );
 
+void songAddBlank( Song* song, const float length );
+
 void songAddSqr( Song* song, const float freq, const float length, const float amplitude );
 
 void songAddGod( Song* song, const float freq, const float length, const float amplitude );
