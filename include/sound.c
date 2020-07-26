@@ -15,7 +15,7 @@ Song makeSong(int const sampleRate, short int const numChannels ) {
     return mySong;
 }
 
-void songAddSample ( Song* song, const float sample ) {
+void songAddSample ( Song *song, const float sample ) {
     if ( song->nSamples > 0 ) {
         song->samples = realloc(song->samples, sizeof(float) * (song->nSamples + 1));
         song->samples[song->nSamples] = sample;
@@ -49,7 +49,7 @@ Wave songMakeWave( Song song, short int const bitsPerSample ) {
     return myWave;
 }
 
-void songAddBlank( Song* song, const float length ) {
+void songAddBlank( Song *song, const float length ) {
     int nSamples = song->sampleRate * length;     // Number of samples to add
 
     float data;
@@ -61,7 +61,7 @@ void songAddBlank( Song* song, const float length ) {
     }
 }
 
-void songAddSqr( Song* song, const float freq, const float length, const float amplitude ) {
+void songAddSqr( Song *song, const float freq, const float length, const float amplitude ) {
     if ( freq > 0.0 ) {
         float data;
 
@@ -81,11 +81,11 @@ void songAddSqr( Song* song, const float freq, const float length, const float a
         }
 
     } else {
-        songAddBlank(&song, length);
+        songAddBlank(song, length);
     }
 }
 
-void songAddGod( Song* song, const float freq, const float length, const float amplitude ) {
+void songAddGod( Song *song, const float freq, const float length, const float amplitude ) {
     if ( freq > 0.0 ) {
         float data;
 
@@ -105,7 +105,7 @@ void songAddGod( Song* song, const float freq, const float length, const float a
         }
 
     } else {
-        songAddBlank(&song, length);
+        songAddBlank(song, length);
     }
 }
 
