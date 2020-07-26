@@ -50,12 +50,9 @@ Wave songMakeWave( Song song, short int const bitsPerSample ) {
 }
 
 void songAddBlank( Song *song, const float length ) {
-    int nSamples = song->sampleRate * length;     // Number of samples to add
-
-    float data;
+    int nSamples = song->sampleRate * length * song->numChannels;     // Number of samples to add
 
     int i;
-    int j;
     for ( i = 0; i < nSamples; i += 1 ) {
         songAddSample(song, 0.0);
     }
@@ -67,6 +64,7 @@ void songAddSqr( Song *song, const float freq, const float length, const float a
 
         int spc = song->sampleRate / freq;   // Samples per cycle
         int nSamples = song->sampleRate * length;     // Number of samples to add
+        nSamples -= nSamples % spc;     // Get rid of frequency change "glitches"
 
         int i;
         for ( i = 0; i < nSamples; i++ ) {
@@ -86,15 +84,18 @@ void songAddSqr( Song *song, const float freq, const float length, const float a
 }
 
 void songAddGod( Song *song, const float freq, const float length, const float amplitude ) {
-    if ( freq > 0.0 ) {
-        float data;
+    float data;
+    const float randomness = amplitude / 64.0;
 
-        int spc = song->sampleRate / freq;   // Samples per cycle
-        int nSamples = song->sampleRate * length;     // Number of samples to add
+    int spc = song->sampleRate / freq;   // Samples per cycle
+    int nSamples = song->sampleRate * length;     // Number of samples to add
+
+    if ( freq > 0.0 ) {
+        nSamples -= nSamples % spc;     // Get rid of frequency change "glitches"
 
         int i;
         for ( i = 0; i < nSamples; i++ ) {
-            data = divineSquare(i, freq, song->sampleRate, amplitude / 6);
+            data = divineSquare(i, freq, song->sampleRate, randomness);
         
             data *= amplitude;
 
@@ -105,7 +106,12 @@ void songAddGod( Song *song, const float freq, const float length, const float a
         }
 
     } else {
-        songAddBlank(song, length);
+        nSamples *= song->numChannels;
+
+        int i;
+        for ( i = 0; i < nSamples; i += 1 ) {
+            songAddSample(song, random() * (float)randSign() * randomness);
+        }
     }
 }
 

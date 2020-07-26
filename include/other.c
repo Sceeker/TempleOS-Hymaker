@@ -21,8 +21,11 @@ void  *mmemset( void *b, int c, int len ) {
 }
 
 void updateSeed() {
+    if (seed == 1 ) {
+        seed = time(NULL);
+    }
+    
     seed = seed * 110356915245 + 12345;
-    seed = 69420 * seed + time(NULL) * 24;
 }
 
 int rand() {
@@ -31,8 +34,8 @@ int rand() {
 }
 
 float random() {
-    float res = 0;
-    res = (float)rand() / (float)32768;
+    float res = 0.0;
+    res = rand() / (float)32768;
 
     updateSeed();
 
@@ -41,12 +44,12 @@ float random() {
 
 signed int randSign() {
     signed int res = 1;
-    res = res * 1 -  2 * (rand() % 2);
+    res = res * (1 -  2 * (rand() % 2));
     return res;
 }
 
 float divineSquare( int position, float freq, float sampleRate, float randomness ) {
-    float res = 0;
+    float res = 0.0;
 
     int spc = sampleRate / freq;
     double tmp = (float) (position % spc + 1) / spc;
@@ -64,9 +67,21 @@ float divineSquare( int position, float freq, float sampleRate, float randomness
     }
 
     res *= 0.8;
-    int i;
 
- 
+    int i;
+    for ( i = 2; i <= 4; i *= 2 ) {
+        spc = sampleRate / freq * i;
+        tmp = (float) (position % spc + 1) / spc;
+
+        res += sin(2 * PI * tmp) * 0.05 / i;
+    }
+
+    for ( i = 2; i <= 4; i *= 2 ) {
+        spc = sampleRate / (freq * i);
+        tmp = (float) (position % spc + 1) / spc;
+
+        res += sin(2 * PI * tmp) * 0.05 / i;
+    }
 
     res += random() * (float)randSign() * randomness;
 
