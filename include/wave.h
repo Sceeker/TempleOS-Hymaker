@@ -16,7 +16,6 @@ typedef struct WaveHeader {
     int byteRate;
     short int blockAlign;
     short int bitsPerSample;
-    //short int extraParamSize;
 
     // Data Subchunk
     char subChunk2Id[4];
@@ -26,7 +25,7 @@ typedef struct WaveHeader {
 
 typedef struct Wave {
     WaveHeader header;
-    char* data;
+    char *data;
     long long int index;
     long long int size;
     long long int nSamples;
@@ -38,10 +37,10 @@ WaveHeader makeWaveHeader( int const sampleRate, short int const numChannels, sh
 
 Wave makeWave( int const sampleRate, short int const numChannels, short int const bitsPerSample );
 
-void waveSetDuration( Wave* wave, const float seconds );
+void waveSetDuration( Wave *wave, const float seconds );
 
-void waveDestroy( Wave* wave );
+void waveDestroy( Wave *wave );
 
-void waveAddSample( Wave* wave, const float* samples );
+void waveAddSample( Wave *wave, const float *samples );
 
-void waveToFile( Wave* wave, const char* filename );
+void waveToFile( Wave *wave, const char *filename );
