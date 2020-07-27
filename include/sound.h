@@ -5,20 +5,20 @@ typedef struct Song {
     short int numChannels;
     int sampleRate;
     long long int nSamples;
-    float* samples;
+    float *samples;
 } Song;
 
 Song makeSong(int const sampleRate, short int const numChannels );
 
-void songAddSample ( Song* song, const float sample );
+void songAddSample ( Song *song, const float sample );
 
 Wave songMakeWave( Song song, short int const bitsPerSample );
 
-void songAddBlank( Song* song, const float length );
+void songAddBlank( Song *song, const float length );
 
-void songAddSqr( Song* song, const float freq, const float length, const float amplitude );
+void songAddSqr( Song *song, const float freq, const float length, const float amplitude );
 
-void songAddGod( Song* song, const float freq, const float length, const float amplitude, bool noise );
+void songAddGod( Song *song, const float freq, const float length, const float amplitude, bool noise );
 
 // CODE THAT FOLLOWS IS DIRECTLY TRANSLATED/EDITED FROM THE TEMPLEOS SOURCE CODE
 
@@ -32,7 +32,7 @@ typedef struct CMakeSongSettings {
     int octave_state;
 } CMakeSongSettings;
 
-void InsNote( CMakeSongSettings* mss, char* buf, int k, int* j );
+void InsNote( CMakeSongSettings *mss, char *buf, int k, int *j );
 
 char* GodSongStr( int complexity, bool rests, bool six_eight, int octave );
 
@@ -42,7 +42,7 @@ int Note2Ona( char note, int octave );
 
 float Ona2Freq( int ona );
 
-char* MusicSetNoteLen( char* st );
+char *MusicSetNoteLen( char *st );
 
 char *MusicSetOctave( char *st );
 

@@ -42,14 +42,6 @@ WaveHeader makeWaveHeader( int const sampleRate, short int const numChannels, sh
     myHeader.subChunk2Id[1] = 'a';
     myHeader.subChunk2Id[2] = 't';
     myHeader.subChunk2Id[3] = 'a';
-
-    // All sizes for later:
-    // chuckSize = 4 + (8 + subChunk1Size) + (8 + subChubk2Size)
-    // subChunk1Size is constanst, i'm using 16 and staying with PCM
-    // subChunk2Size = nSamples * nChannels * bitsPerSample/8
-    // Whenever a sample is added:
-    //    chunkSize += (nChannels * bitsPerSample/8)
-    //    subChunk2Size += (nChannels * bitsPerSample/8)
     myHeader.chunkSize = 4 + 8 + 16 + 8 + 0;
     myHeader.subChunk1Size = 16;
     myHeader.subChunk2Size = 0;
@@ -57,18 +49,18 @@ WaveHeader makeWaveHeader( int const sampleRate, short int const numChannels, sh
     return myHeader;
 }
 
-Wave makeWave(int const sampleRate, short int const numChannels, short int const bitsPerSample) {
+Wave makeWave( int const sampleRate, short int const numChannels, short int const bitsPerSample ) {
     Wave myWave;
     myWave.header = makeWaveHeader(sampleRate, numChannels, bitsPerSample);
 
     return myWave;
 }
 
-void waveDestroy( Wave* wave ) {
+void waveDestroy( Wave *wave ) {
     free( wave->data );
 }
 
-void waveSetDuration( Wave* wave, const float seconds ) {
+void waveSetDuration( Wave *wave, const float seconds ) {
     long long int totalBytes = (long long int)(wave->header.byteRate*seconds);
     wave->data = (char*)malloc(totalBytes);
     wave->index = 0;
@@ -78,12 +70,12 @@ void waveSetDuration( Wave* wave, const float seconds ) {
     wave->header.subChunk2Size = totalBytes;
 }
 
-void waveAddSample( Wave* wave, const float* samples ) {
+void waveAddSample( Wave *wave, const float *samples ) {
     int i;
     short int sample8bit;
     int sample16bit;
     long int sample32bit;
-    char* sample;
+    char *sample;
 
     if( wave->header.bitsPerSample < 8 && wave->header.bitsPerSample > 1 ) {
         for( i=0; i < wave->header.numChannels; i++ ){
@@ -112,7 +104,6 @@ void waveAddSample( Wave* wave, const float* samples ) {
     if( wave->header.bitsPerSample == 16 ) {
         for( i=0; i < wave->header.numChannels; i++ ){
             sample16bit = (int) (32767 * samples[i]);
-            //sample = (char*)&litEndianInt( sample16bit );
             toLittleEndian(2, (void*) &sample16bit);
             sample = (char*)&sample16bit;
             wave->data[ wave->index + 0 ] = sample[0];
@@ -124,7 +115,6 @@ void waveAddSample( Wave* wave, const float* samples ) {
     if( wave->header.bitsPerSample == 32 ){
         for( i=0; i < wave->header.numChannels; i+= 1){
             sample32bit = (long int) ((pow(2,32-1)-1)*samples[i]);
-            //sample = (char*)&litEndianLong( sample32bit );
             toLittleEndian(4, (void*) &sample32bit);
             sample = (char*)&sample32bit;
             wave->data[ wave->index + 0 ] = sample[0];
@@ -136,7 +126,7 @@ void waveAddSample( Wave* wave, const float* samples ) {
     }
 }
 
-void waveToFile( Wave* wave, const char* filename ) {
+void waveToFile( Wave *wave, const char *filename ) {
 
     bool inf = false;
     short int last = 0;

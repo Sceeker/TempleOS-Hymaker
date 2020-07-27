@@ -45,6 +45,7 @@ float random() {
 signed int randSign() {
     signed int res = 1;
     res = res * (1 -  2 * (rand() % 2));
+    
     return res;
 }
 

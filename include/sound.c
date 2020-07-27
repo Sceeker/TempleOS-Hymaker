@@ -53,7 +53,7 @@ void songAddBlank( Song *song, const float length ) {
     int nSamples = song->sampleRate * length * song->numChannels;     // Number of samples to add
 
     int i;
-    for ( i = 0; i < nSamples; i += 1 ) {
+    for ( i = 0; i < nSamples; i ++ ) {
         songAddSample(song, 0.0);
     }
 }
@@ -109,7 +109,7 @@ void songAddGod( Song *song, const float freq, const float length, const float a
         nSamples *= song->numChannels;
 
         int i;
-        for ( i = 0; i < nSamples; i += 1 ) {
+        for ( i = 0; i < nSamples; i ++ ) {
             songAddSample(song, random() * (float)randSign() * randomness);
         }
     }
@@ -169,9 +169,9 @@ void InsNote( CMakeSongSettings *mss, char *buf, int k, int *j ) {   // k is a r
     }
 }
 
-char* GodSongStr( int complexity, bool rests, bool six_eight, int octave ) { // Make God generate 2 measures of a song
+char *GodSongStr( int complexity, bool rests, bool six_eight, int octave ) { // Make God generate 2 measures of a song
     CMakeSongSettings mss;
-    char* buf;
+    char *buf;
     int i = 0;
     int j = 0;
     int k = -1;
@@ -293,11 +293,11 @@ char* GodSongStr( int complexity, bool rests, bool six_eight, int octave ) { // 
   return buf;
 }
 
-char* GodSong( int complexity, bool rests, bool six_eight, int octave ) {       // Make God generate 2measuresx2+2measuresx2
-    char* st1 = GodSongStr(complexity, rests, six_eight, octave);
-    char* st2 = GodSongStr(complexity, rests, six_eight, octave);
+char *GodSong( int complexity, bool rests, bool six_eight, int octave ) {       // Make God generate 2measuresx2+2measuresx2
+    char *st1 = GodSongStr(complexity, rests, six_eight, octave);
+    char *st2 = GodSongStr(complexity, rests, six_eight, octave);
 
-    char* res = malloc(sizeof(char) * len(st1) * len(st2) * 4);
+    char *res = malloc(sizeof(char) * len(st1) * len(st2) * 4);
     res = concatenate(st1, st1);
     res = concatenate(res, st2);
     res = concatenate(res, st2);
@@ -427,7 +427,7 @@ Song strToSong( char* song, int sampleRate, int numChannels, bool noise ) {
             song = MusicSetNoteLen(song);
         } while ( song != last_song );
 
-        if ( !*song ) {
+        if ( ! *song ) {
             break;
         }
 

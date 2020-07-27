@@ -10,10 +10,10 @@ int isBigEndian() {
 void reverseEndianness( const long long int size, void* value ) {
     int i;
     char result[32];
-    for( i = 0; i < size; i += 1 ){
+    for ( i = 0; i < size; i ++ ) {
         result[i] = ((char*)value)[size - i - 1];
     }
-    for( i = 0; i < size; i += 1 ){
+    for ( i = 0; i < size; i ++ ) {
         ((char*)value)[i] = result[i];
     }
 }
