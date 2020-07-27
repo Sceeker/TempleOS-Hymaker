@@ -63,10 +63,10 @@ int main() {
     char* song = GodSong(complexity, rests, six_eight, octave);
     printf("\nHere is your hymn's string:\n%s\n", song);
 
-    Song mySong = makeSong(32000, 1);       // Create a song for the hymn at 32000Hz in mono
-    mySong = strToSong(song, 32000, 1, false);     // Convert the hymn string to a song
+    Song mySong = makeSong(24000, 1);       // Create a song for the hymn at 24000Hz in mono
+    mySong = strToSong(song, 24000, 1, true);     // Convert the hymn string to a song (with white noise)
 
-    Wave myWave = songMakeWave(mySong, 8);  // Create a wave corresponding to our song
+    Wave myWave = songMakeWave(mySong, 6);  // Create a wave corresponding to our song
 
     char *name = concatenate(getGodWord(), ".wav");
     printf("\nIt has been saved as %s", name);

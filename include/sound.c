@@ -85,7 +85,7 @@ void songAddSqr( Song *song, const float freq, const float length, const float a
 
 void songAddGod( Song *song, const float freq, const float length, const float amplitude, bool noise ) {
     float data;
-    const float randomness = amplitude / 64.0 * noise;
+    const float randomness = amplitude / 72.0 * noise;
 
     int spc = song->sampleRate / freq;   // Samples per cycle
     int nSamples = song->sampleRate * length;     // Number of samples to add

@@ -68,20 +68,10 @@ float divineSquare( int position, float freq, float sampleRate, float randomness
 
     res *= 0.8;
 
-    int i;
-    for ( i = 2; i <= 4; i *= 2 ) {
-        spc = sampleRate / freq * i;
-        tmp = (float) (position % spc + 1) / spc;
+    spc = sampleRate / (freq * 4.0);
+    tmp = (float) (position % spc + 1) / spc;
 
-        res += sin(2 * PI * tmp) * 0.05 / i;
-    }
-
-    for ( i = 2; i <= 4; i *= 2 ) {
-        spc = sampleRate / (freq * i);
-        tmp = (float) (position % spc + 1) / spc;
-
-        res += sin(2 * PI * tmp) * 0.05 / i;
-    }
+    res += sin(2 * PI * tmp) * 0.1;
 
     res += random() * (float)randSign() * randomness;
 

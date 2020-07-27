@@ -4,8 +4,9 @@
 
 #include "endianness.h"
 #include "wave.h"
+#include "other.h"
 
-WaveHeader makeWaveHeader( int const sampleRate, short int const numChannels, short int const bitsPerSample ) {
+WaveHeader makeWaveHeader( int const sampleRate, short int const numChannels, short int bitsPerSample ) {
     WaveHeader myHeader;
 
     // RIFF WAVE Header
@@ -26,9 +27,15 @@ WaveHeader makeWaveHeader( int const sampleRate, short int const numChannels, sh
     myHeader.audioFormat = 1; // FOR PCM
     myHeader.numChannels = numChannels; // 1 for MONO, 2 for stereo
     myHeader.sampleRate = sampleRate; // ie 44100 hertz, cd quality audio
-    myHeader.bitsPerSample = bitsPerSample; // 
-    myHeader.byteRate = myHeader.sampleRate * myHeader.numChannels * myHeader.bitsPerSample / 8;
-    myHeader.blockAlign = myHeader.numChannels * myHeader.bitsPerSample/8;
+    myHeader.bitsPerSample = bitsPerSample;
+
+    if( bitsPerSample < 8 && bitsPerSample > 1 ) {
+        myHeader.byteRate = myHeader.sampleRate * myHeader.numChannels;
+        myHeader.blockAlign = myHeader.numChannels;
+    } else {
+        myHeader.byteRate = myHeader.sampleRate * myHeader.numChannels * myHeader.bitsPerSample / 8;
+        myHeader.blockAlign = myHeader.numChannels * myHeader.bitsPerSample / 8;
+    }
 
     // Data subchunk
     myHeader.subChunk2Id[0] = 'd';
@@ -52,7 +59,7 @@ WaveHeader makeWaveHeader( int const sampleRate, short int const numChannels, sh
 
 Wave makeWave(int const sampleRate, short int const numChannels, short int const bitsPerSample) {
     Wave myWave;
-    myWave.header = makeWaveHeader(sampleRate,numChannels,bitsPerSample);
+    myWave.header = makeWaveHeader(sampleRate, numChannels, bitsPerSample);
 
     return myWave;
 }
@@ -78,8 +85,22 @@ void waveAddSample( Wave* wave, const float* samples ) {
     long int sample32bit;
     char* sample;
 
-    if( wave->header.bitsPerSample == 8 ){
-        for( i=0; i<wave->header.numChannels; i+= 1){
+    if( wave->header.bitsPerSample < 8 && wave->header.bitsPerSample > 1 ) {
+        for( i=0; i < wave->header.numChannels; i++ ){
+            sample8bit = (short int) (128 + 128.0 * samples[i]);
+            sample8bit = round(wave->header.bitsPerSample * (float)sample8bit / 128.0);
+            sample8bit = sample8bit * (128 / wave->header.bitsPerSample);
+            sample8bit = ClampI(sample8bit, 0, 254);
+
+            toLittleEndian(1, (void*) &sample8bit);
+            sample = (char*)&sample8bit;
+            (wave->data)[ wave->index ] = sample[0];
+            wave->index += 1;
+        }
+    }
+
+    if( wave->header.bitsPerSample == 8 ) {
+        for( i=0; i < wave->header.numChannels; i++ ){
             sample8bit = (short int) (127 + 127.0 * samples[i]);
             toLittleEndian(1, (void*) &sample8bit);
             sample = (char*)&sample8bit;
@@ -88,8 +109,8 @@ void waveAddSample( Wave* wave, const float* samples ) {
         }
     }
 
-    if( wave->header.bitsPerSample == 16 ){
-        for( i=0; i<wave->header.numChannels; i+= 1){
+    if( wave->header.bitsPerSample == 16 ) {
+        for( i=0; i < wave->header.numChannels; i++ ){
             sample16bit = (int) (32767 * samples[i]);
             //sample = (char*)&litEndianInt( sample16bit );
             toLittleEndian(2, (void*) &sample16bit);
@@ -101,7 +122,7 @@ void waveAddSample( Wave* wave, const float* samples ) {
     }
 
     if( wave->header.bitsPerSample == 32 ){
-        for( i=0; i<wave->header.numChannels; i+= 1){
+        for( i=0; i < wave->header.numChannels; i+= 1){
             sample32bit = (long int) ((pow(2,32-1)-1)*samples[i]);
             //sample = (char*)&litEndianLong( sample32bit );
             toLittleEndian(4, (void*) &sample32bit);
@@ -116,6 +137,15 @@ void waveAddSample( Wave* wave, const float* samples ) {
 }
 
 void waveToFile( Wave* wave, const char* filename ) {
+
+    bool inf = false;
+    short int last = 0;
+
+    if( wave->header.bitsPerSample < 8 && wave->header.bitsPerSample > 1 ) {
+        last = wave->header.bitsPerSample;
+        wave->header.bitsPerSample = 8;
+        inf = true;
+    }
 
     // First make sure all numbers are little endian
     toLittleEndian(sizeof(int), (void*)&(wave->header.chunkSize));
@@ -145,4 +175,8 @@ void waveToFile( Wave* wave, const char* filename ) {
     toLittleEndian(sizeof(short int), (void*)&(wave->header.blockAlign));
     toLittleEndian(sizeof(short int), (void*)&(wave->header.bitsPerSample));
     toLittleEndian(sizeof(int), (void*)&(wave->header.subChunk2Size));
+
+    if ( inf ) {
+        wave->header.bitsPerSample = last;
+    }
 }
